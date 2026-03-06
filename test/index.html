@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Колл-центр — POLIHOV DEV STUDIO</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+body{
+background:#f4f6fb;
+color:#1e293b;
+}
+
+.wrapper{
+max-width:1500px;
+margin:auto;
+padding:25px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.title{
+font-size:26px;
+font-weight:600;
+}
+
+.controls{
+display:flex;
+gap:10px;
+}
+
+.search{
+background:white;
+border:1px solid #e2e8f0;
+padding:10px 14px;
+border-radius:10px;
+width:260px;
+}
+
+.btn{
+border:none;
+padding:10px 16px;
+border-radius:10px;
+cursor:pointer;
+font-weight:500;
+}
+
+.btn-filter{
+background:#2563eb;
+color:white;
+}
+
+.btn-new{
+background:#16a34a;
+color:white;
+}
+
+.table{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 10px 40px rgba(0,0,0,0.05);
+}
+
+.row{
+display:grid;
+grid-template-columns:
+140px
+80px
+220px
+150px
+1fr
+200px
+90px;
+
+border-bottom:1px solid #f1f5f9;
+}
+
+.row.header{
+background:#f8fafc;
+font-size:13px;
+color:#64748b;
+font-weight:600;
+}
+
+.cell{
+padding:14px;
+font-size:14px;
+}
+
+.status{
+display:inline-block;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+font-weight:600;
+}
+
+.status.new{
+background:#dcfce7;
+color:#166534;
+}
+
+.status.courier{
+background:#ede9fe;
+color:#6d28d9;
+}
+
+.status.done{
+background:#e2e8f0;
+color:#475569;
+}
+
+.status.cancel{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.client{
+font-weight:600;
+}
+
+.phone{
+font-size:12px;
+color:#64748b;
+}
+
+.address{
+font-size:13px;
+line-height:1.3;
+}
+
+.branch{
+font-size:13px;
+font-weight:500;
+}
+
+.price{
+font-weight:600;
+text-align:right;
+}
+
+.row:hover{
+background:#f9fafb;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="wrapper">
+
+<div class="header">
+
+<div class="title">
+Колл-центр
+</div>
+
+<div class="controls">
+
+<input class="search" placeholder="Поиск">
+
+<button class="btn btn-filter">
+Фильтр
+</button>
+
+<button class="btn btn-new">
+Новый заказ
+</button>
+
+</div>
+
+</div>
+
+
+<div class="table">
+
+<div class="row header">
+<div class="cell">Статус / №</div>
+<div class="cell">Время</div>
+<div class="cell">Клиент</div>
+<div class="cell">Тип</div>
+<div class="cell">Адрес</div>
+<div class="cell">Точка</div>
+<div class="cell">Сумма</div>
+</div>
+
+
+
+<div class="row">
+
+<div class="cell">
+<div class="status courier">У курьера</div>
+<div>#245</div>
+</div>
+
+<div class="cell">13:00</div>
+
+<div class="cell">
+<div class="client">Клиент</div>
+<div class="phone">+79328588725</div>
+</div>
+
+<div class="cell">
+Предзаказ<br>Доставка
+</div>
+
+<div class="cell address">
+ул. Монтажников 9<br>
+кв 213 этаж 2 подъезд 1
+</div>
+
+<div class="cell branch">
+СЫТНАЯ ДОСТАВКА<br>
+Театральная
+</div>
+
+<div class="cell price">
+1605₽
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="cell">
+<div class="status new">Новый</div>
+<div>#23</div>
+</div>
+
+<div class="cell">12:00</div>
+
+<div class="cell">
+<div class="client">Копылов Григорий</div>
+<div class="phone">+79033658590</div>
+</div>
+
+<div class="cell">
+Предзаказ<br>Доставка
+</div>
+
+<div class="cell address">
+ул. Челюскинцев 23
+</div>
+
+<div class="cell branch">
+СЫТНАЯ ДОСТАВКА<br>
+Кичигина
+</div>
+
+<div class="cell price">
+1700₽
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="cell">
+<div class="status courier">У курьера</div>
+<div>#2235</div>
+</div>
+
+<div class="cell">12:00</div>
+
+<div class="cell">
+<div class="client">Анастасия</div>
+<div class="phone">+79867735372</div>
+</div>
+
+<div class="cell">
+Предзаказ<br>Доставка
+</div>
+
+<div class="cell address">
+ул. Шевченко 26/2
+</div>
+
+<div class="cell branch">
+СЫТНАЯ ДОСТАВКА<br>
+Кичигина
+</div>
+
+<div class="cell price">
+3705₽
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="cell">
+<div class="status done">Завершен</div>
+<div>#21</div>
+</div>
+
+<div class="cell">16:13</div>
+
+<div class="cell">
+<div class="client">Михаил Солдаткин</div>
+<div class="phone">+79030525468</div>
+</div>
+
+<div class="cell">
+Доставка
+</div>
+
+<div class="cell address">
+ул. Шевченко 18А кв108
+</div>
+
+<div class="cell branch">
+СЫТНАЯ ДОСТАВКА<br>
+Театральная
+</div>
+
+<div class="cell price">
+1460₽
+</div>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+</body>
+</html>
