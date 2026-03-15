@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Колл-центр — Прожарим</title>
+  <style>
+    :root{
+      --bg:#f7f2ea;
+      --bg-2:#fbf8f3;
+      --panel:#ffffff;
+      --panel-2:#fffaf3;
+      --line:#eadcca;
+      --line-soft:#f2e8dc;
+      --text:#2d241c;
+      --muted:#7e6b57;
+      --accent:#b33a2b;
+      --accent-dark:#8f2b20;
+      --accent-soft:#f7ded8;
+      --gold:#c7923b;
+      --gold-soft:#f8ecd4;
+      --green:#3d8b5f;
+      --green-soft:#dff2e6;
+      --violet:#7c63b8;
+      --violet-soft:#ede6fb;
+      --orange:#d07b29;
+      --orange-soft:#fae8d4;
+      --gray:#7b7b7b;
+      --gray-soft:#efefef;
+      --red:#b84d4d;
+      --red-soft:#f8dfdf;
+      --shadow:0 12px 40px rgba(79, 53, 28, 0.08);
+      --shadow-soft:0 8px 24px rgba(79, 53, 28, 0.05);
+      --radius:26px;
+      --radius-lg:30px;
+      --radius-md:20px;
+      --radius-sm:14px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html,body{
+      min-height:100%;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(179,58,43,.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(199,146,59,.10), transparent 22%),
+        linear-gradient(180deg,#fcfaf7 0%,#f7f2ea 100%);
+    }
+
+    body{
+      padding:18px;
+    }
+
+    .app{
+      max-width:1600px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      margin-bottom:18px;
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      background:rgba(255,250,244,.88);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(234,220,202,.9);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      min-width:0;
+    }
+
+    .brand-logo{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,.22), transparent 30%),
+        linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 12px 28px rgba(179,58,43,.24);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-weight:900;
+      font-size:22px;
+      flex-shrink:0;
+    }
+
+    .brand-meta{
+      min-width:0;
+    }
+
+    .brand-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #ecd9b8;
+      background:var(--gold-soft);
+      color:#8e6829;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .brand-title{
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.03em;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .brand-title .pulse{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 0 8px rgba(61,139,95,.10);
+      flex-shrink:0;
+    }
+
+    .brand-subtitle{
+      margin-top:7px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .search-wrap{
+      position:relative;
+      width:340px;
+      max-width:100%;
+    }
+
+    .search-wrap svg{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
+      width:18px;
+      height:18px;
+      color:#9d8a77;
+      pointer-events:none;
+    }
+
+    .search{
+      width:100%;
+      height:48px;
+      padding:0 16px 0 42px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    .search::placeholder{
+      color:#a18f7d;
+    }
+
+    .btn{
+      height:48px;
+      border:none;
+      border-radius:16px;
+      padding:0 18px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:800;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-filter{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow-soft);
+    }
+
+    .btn-new{
+      color:#fff;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.14), transparent 28%),
+        linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 12px 28px rgba(179,58,43,.22);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .stat{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg,#fffdfa 0%,#fff8ef 100%);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .stat::after{
+      content:"";
+      position:absolute;
+      right:-22px;
+      top:-22px;
+      width:88px;
+      height:88px;
+      border-radius:50%;
+      background:rgba(199,146,59,.08);
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:10px;
+    }
+
+    .stat-value{
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.03em;
+      font-weight:900;
+      position:relative;
+      z-index:1;
+    }
+
+    .stat-note{
+      margin-top:9px;
+      color:#9f8c77;
+      font-size:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns:minmax(0,1.65fr) minmax(340px,.8fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .orders-wrap,
+    .side-card,
+    .panel{
+      background:linear-gradient(180deg,#fffdfa 0%,#fff 100%);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .orders-wrap{
+      border-radius:30px;
+      overflow:hidden;
+    }
+
+    .orders-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      padding:18px 20px;
+      border-bottom:1px solid var(--line-soft);
+      background:
+        radial-gradient(circle at right top, rgba(199,146,59,.08), transparent 22%),
+        linear-gradient(180deg,#fff9f0 0%,#fff 100%);
+    }
+
+    .orders-title h2{
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .orders-title p{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .chip{
+      height:38px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:13px;
+      font-weight:800;
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .chip.active{
+      background:var(--accent-soft);
+      color:var(--accent-dark);
+      border-color:#ebc2ba;
+    }
+
+    .table{
+      width:100%;
+      overflow:auto;
+    }
+
+    .table-grid{
+      min-width:1280px;
+    }
+
+    .table-row{
+      display:grid;
+      grid-template-columns:8px 138px 94px 220px 170px 1.5fr 220px 120px;
+      background:#fff;
+      border-bottom:1px solid #f3ebe0;
+      transition:.18s ease;
+    }
+
+    .table-row:hover{
+      background:#fffaf4;
+    }
+
+    .table-row.header{
+      background:#fcf7ef;
+      color:#89745d;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .table-row.selected{
+      background:linear-gradient(180deg,#fffdf9 0%,#fff8ee 100%);
+    }
+
+    .line{
+      background:transparent;
+    }
+
+    .table-row.selected .line{
+      margin:10px 0;
+      border-radius:0 10px 10px 0;
+      background:linear-gradient(180deg,var(--accent) 0%,#db6252 100%);
+    }
+
+    .cell{
+      padding:14px 14px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      font-size:14px;
+    }
+
+    .cell.right{
+      text-align:right;
+      align-items:flex-end;
+    }
+
+    .status{
+      display:inline-flex;
+      width:max-content;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid transparent;
+      margin-bottom:8px;
+    }
+
+    .status.new{
+      background:var(--green-soft);
+      color:var(--green);
+      border-color:#bfe2cc;
+    }
+
+    .status.cooking{
+      background:var(--orange-soft);
+      color:var(--orange);
+      border-color:#f0d0aa;
+    }
+
+    .status.courier{
+      background:var(--violet-soft);
+      color:var(--violet);
+      border-color:#dacdf9;
+    }
+
+    .status.done{
+      background:var(--gray-soft);
+      color:#6f6f6f;
+      border-color:#e2e2e2;
+    }
+
+    .status.cancel{
+      background:var(--red-soft);
+      color:var(--red);
+      border-color:#efc8c8;
+    }
+
+    .order-id{
+      font-weight:900;
+      color:var(--text);
+    }
+
+    .time-main{
+      font-weight:900;
+    }
+
+    .time-sub{
+      margin-top:4px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .client-name{
+      font-weight:900;
+      line-height:1.2;
+    }
+
+    .client-phone{
+      margin-top:5px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .type-main{
+      font-weight:800;
+      line-height:1.32;
+    }
+
+    .address-main{
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .address-note{
+      margin-top:5px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .point-main{
+      font-weight:900;
+      line-height:1.3;
+      color:#5a412c;
+    }
+
+    .sum{
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:-.03em;
+      color:var(--accent-dark);
+    }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      position:sticky;
+      top:102px;
+    }
+
+    .side-card{
+      border-radius:30px;
+      overflow:hidden;
+    }
+
+    .side-top{
+      padding:20px 20px 18px;
+      border-bottom:1px solid var(--line-soft);
+      background:
+        radial-gradient(circle at top right, rgba(179,58,43,.08), transparent 24%),
+        linear-gradient(180deg,#fff8ef 0%,#fff 100%);
+    }
+
+    .side-top-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .side-top h3{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+
+    .side-top p{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .side-status{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .status-btn{
+      flex:1 1 calc(50% - 10px);
+      min-width:130px;
+      height:44px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .status-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .status-btn.primary{
+      border:none;
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 10px 22px rgba(179,58,43,.20);
+    }
+
+    .side-body{
+      padding:18px 20px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .detail-box{
+      background:var(--panel-2);
+      border:1px solid var(--line-soft);
+      border-radius:18px;
+      padding:15px 16px;
+    }
+
+    .detail-label{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#927b63;
+      margin-bottom:8px;
+    }
+
+    .detail-value{
+      font-size:14px;
+      line-height:1.45;
+      font-weight:700;
+    }
+
+    .detail-sub{
+      margin-top:6px;
+      font-size:13px;
+      line-height:1.42;
+      color:var(--muted);
+    }
+
+    .order-items{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .order-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      padding:14px 15px;
+      border-radius:16px;
+      background:#fff;
+      border:1px solid var(--line-soft);
+    }
+
+    .order-item-name{
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    .order-item-sub{
+      margin-top:4px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .order-item-price{
+      font-weight:900;
+      white-space:nowrap;
+      color:var(--accent-dark);
+    }
+
+    .totals{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .total-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:var(--panel-2);
+      border:1px solid var(--line-soft);
+      font-size:14px;
+    }
+
+    .total-row strong{
+      font-size:18px;
+      color:var(--accent-dark);
+    }
+
+    .hotkeys,
+    .bottom-panels{
+      margin-top:18px;
+    }
+
+    .bottom-panels{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+    }
+
+    .panel{
+      border-radius:26px;
+      padding:20px;
+    }
+
+    .panel h3{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .panel p{
+      margin-top:6px;
+      margin-bottom:14px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .filter-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .filter-btn{
+      padding:12px 16px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .filter-btn.active{
+      border:none;
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 10px 22px rgba(179,58,43,.22);
+    }
+
+    .summary-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:var(--panel-2);
+      border:1px solid var(--line-soft);
+    }
+
+    .summary-item span:first-child{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .summary-item span:last-child{
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .hotkeys{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .hotkey{
+      border-radius:22px;
+      background:linear-gradient(180deg,#fffdfa 0%,#fff 100%);
+      border:1px solid var(--line);
+      padding:16px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .hotkey-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .hotkey-kbd{
+      min-width:44px;
+      height:32px;
+      padding:0 10px;
+      border-radius:10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff7ee;
+      border:1px solid #ecd9c3;
+      color:var(--accent-dark);
+      font-size:13px;
+      font-weight:900;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+    }
+
+    .hotkey-title{
+      font-size:14px;
+      font-weight:900;
+      line-height:1.25;
+    }
+
+    .hotkey-text{
+      font-size:13px;
+      line-height:1.4;
+      color:var(--muted);
+    }
+
+    @media (max-width:1300px){
+      .main{
+        grid-template-columns:1fr;
+      }
+
+      .side{
+        position:static;
+      }
+    }
+
+    @media (max-width:1100px){
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .bottom-panels,
+      .hotkeys{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width:860px){
+      body{
+        padding:14px;
+      }
+
+      .topbar{
+        position:static;
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .top-actions{
+        justify-content:stretch;
+      }
+
+      .search-wrap{
+        width:100%;
+      }
+
+      .btn{
+        flex:1;
+        justify-content:center;
+      }
+
+      .orders-head{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .chips{
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width:640px){
+      .stats,
+      .bottom-panels,
+      .hotkeys{
+        grid-template-columns:1fr;
+      }
+
+      .brand-title{
+        font-size:24px;
+      }
+
+      .brand-logo{
+        width:48px;
+        height:48px;
+        border-radius:15px;
+        font-size:19px;
+      }
+
+      .side-status{
+        flex-direction:column;
+      }
+
+      .status-btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-logo">П</div>
+        <div class="brand-meta">
+          <div class="brand-badge">PROZHARIM · CALL CENTER</div>
+          <div class="brand-title">
+            Колл-центр
+            <span class="pulse"></span>
+          </div>
+          <div class="brand-subtitle">Светлая CRM-панель заказов в стиле сайта Прожарим</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20L17 17"></path>
+          </svg>
+          <input class="search" type="text" placeholder="Поиск по номеру, клиенту, телефону, адресу">
+        </div>
+        <button class="btn btn-filter">Фильтры</button>
+        <button class="btn btn-new">+ Новый заказ</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Новых заказов</div>
+        <div class="stat-value">12</div>
+        <div class="stat-note">За последние 30 минут</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">На кухне</div>
+        <div class="stat-value">5</div>
+        <div class="stat-note">Готовятся сейчас</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">У курьера</div>
+        <div class="stat-value">4</div>
+        <div class="stat-note">В пути к клиентам</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Средний чек</div>
+        <div class="stat-value">2 145₽</div>
+        <div class="stat-note">По текущей смене</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="orders-wrap">
+        <div class="orders-head">
+          <div class="orders-title">
+            <h2>Лента заказов</h2>
+            <p>Все входящие заказы с сайтов ресторанов и филиалов</p>
+          </div>
+
+          <div class="chips">
+            <div class="chip active">Все</div>
+            <div class="chip">Новые</div>
+            <div class="chip">На кухне</div>
+            <div class="chip">У курьера</div>
+            <div class="chip">Самовывоз</div>
+            <div class="chip">Предзаказ</div>
+          </div>
+        </div>
+
+        <div class="table">
+          <div class="table-grid">
+
+            <div class="table-row header">
+              <div class="line"></div>
+              <div class="cell">Статус / №</div>
+              <div class="cell">Время</div>
+              <div class="cell">Клиент</div>
+              <div class="cell">Тип</div>
+              <div class="cell">Адрес</div>
+              <div class="cell">Точка</div>
+              <div class="cell right">Сумма</div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status courier">У курьера</div>
+                <div class="order-id">#245</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">13:00</div>
+                <div class="time-sub">Сегодня</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Клиент</div>
+                <div class="client-phone">+7 932 858-87-25</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Предзаказ</div>
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">ул. Монтажников, 9, кв 213, этаж 2, подъезд 1</div>
+                <div class="address-note">Центральный суд, позвонить</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">Театральная</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">1605₽</div>
+              </div>
+            </div>
+
+            <div class="table-row selected">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status new">Новый</div>
+                <div class="order-id">#23</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">12:00</div>
+                <div class="time-sub">Сегодня</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Копылов Григорий</div>
+                <div class="client-phone">+7 903 365-85-90</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Предзаказ</div>
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">ул. Челюскинцев, 23</div>
+                <div class="address-note">Без комментария</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">Кичигина</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">1700₽</div>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status cooking">На кухне</div>
+                <div class="order-id">#27</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">12:11</div>
+                <div class="time-sub">Сегодня</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Елена</div>
+                <div class="client-phone">+7 911 115-10-21</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">Космическая улица, 5к1, кв 216, этаж 9, подъезд 6</div>
+                <div class="address-note">Домофон 216</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">Театральная</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">1470₽</div>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status courier">У курьера</div>
+                <div class="order-id">#2235</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">12:00</div>
+                <div class="time-sub">Сегодня</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Анастасия</div>
+                <div class="client-phone">+7 986 773-53-72</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Предзаказ</div>
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">ул. Шевченко, 26/2</div>
+                <div class="address-note">Как курьер будет ехать — пускай позвонит</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">Кичигина</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">3705₽</div>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status done">Завершен</div>
+                <div class="order-id">#21</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">16:13</div>
+                <div class="time-sub">Вчера</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Михаил Солдаткин</div>
+                <div class="client-phone">+7 903 052-54-68</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">ул. Шевченко, 18А, кв 108, этаж 1, подъезд 1</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">Театральная</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">1460₽</div>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status cancel">Отменен</div>
+                <div class="order-id">#320</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">09:30</div>
+                <div class="time-sub">Вчера</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Гость</div>
+                <div class="client-phone">+7 903 360-12-61</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Предзаказ</div>
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">Беляевская улица, 42/3, кв нет, этаж 1, подъезд нет</div>
+                <div class="address-note">Офис</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">27 Линия, дом 60</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">5835₽</div>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="line"></div>
+              <div class="cell">
+                <div class="status done">Завершен</div>
+                <div class="order-id">#19305</div>
+              </div>
+              <div class="cell">
+                <div class="time-main">20:26</div>
+                <div class="time-sub">4 марта</div>
+              </div>
+              <div class="cell">
+                <div class="client-name">Максим</div>
+                <div class="client-phone">+7 901 089-72-24</div>
+              </div>
+              <div class="cell">
+                <div class="type-main">Доставка</div>
+              </div>
+              <div class="cell">
+                <div class="address-main">Алтайская улица, 12А, кв 124, этаж 4, подъезд 4</div>
+                <div class="address-note">Домофон 124</div>
+              </div>
+              <div class="cell">
+                <div class="point-main">СЫТНАЯ ДОСТАВКА</div>
+                <div class="address-note">27 Линия, дом 60</div>
+              </div>
+              <div class="cell right">
+                <div class="sum">2020₽</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <div class="side-card">
+          <div class="side-top">
+            <div class="side-top-row">
+              <div>
+                <h3>Заказ #23</h3>
+                <p>Выбранный заказ для быстрого просмотра оператором</p>
+              </div>
+              <div class="status new">Новый</div>
+            </div>
+
+            <div class="side-status">
+              <button class="status-btn primary">Принять в работу</button>
+              <button class="status-btn">На кухню</button>
+              <button class="status-btn">Передать курьеру</button>
+              <button class="status-btn">Отменить</button>
+            </div>
+          </div>
+
+          <div class="side-body">
+            <div class="detail-box">
+              <div class="detail-label">Клиент</div>
+              <div class="detail-value">Копылов Григорий</div>
+              <div class="detail-sub">+7 903 365-85-90</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Тип заказа</div>
+              <div class="detail-value">Предзаказ · Доставка</div>
+              <div class="detail-sub">Оплата картой при получении</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Адрес</div>
+              <div class="detail-value">ул. Челюскинцев, 23</div>
+              <div class="detail-sub">Комментарий: без комментария</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Филиал</div>
+              <div class="detail-value">СЫТНАЯ ДОСТАВКА · Кичигина</div>
+              <div class="detail-sub">Время приема: 12:00</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Состав заказа</div>
+              <div class="order-items">
+                <div class="order-item">
+                  <div>
+                    <div class="order-item-name">Филадельфия классическая × 1</div>
+                    <div class="order-item-sub">Без изменений</div>
+                  </div>
+                  <div class="order-item-price">650₽</div>
+                </div>
+
+                <div class="order-item">
+                  <div>
+                    <div class="order-item-name">Запечённый ролл × 1</div>
+                    <div class="order-item-sub">Соус отдельно</div>
+                  </div>
+                  <div class="order-item-price">540₽</div>
+                </div>
+
+                <div class="order-item">
+                  <div>
+                    <div class="order-item-name">Морс клюквенный × 2</div>
+                    <div class="order-item-sub">0.5 л</div>
+                  </div>
+                  <div class="order-item-price">260₽</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="totals">
+              <div class="total-row">
+                <span>Сумма блюд</span>
+                <span>1450₽</span>
+              </div>
+              <div class="total-row">
+                <span>Доставка</span>
+                <span>250₽</span>
+              </div>
+              <div class="total-row">
+                <span>Итого</span>
+                <strong>1700₽</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Сводка смены</h3>
+          <p>По филиалам и текущему потоку заказов</p>
+          <div class="summary-list">
+            <div class="summary-item"><span>Театральная</span><span>14 заказов</span></div>
+            <div class="summary-item"><span>Кичигина</span><span>11 заказов</span></div>
+            <div class="summary-item"><span>27 Линия</span><span>7 заказов</span></div>
+            <div class="summary-item"><span>Средний чек</span><span>2 145₽</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-panels">
+      <div class="panel">
+        <h3>Быстрые фильтры</h3>
+        <p>Для операторов колл-центра и старших смены</p>
+        <div class="filter-list">
+          <button class="filter-btn active">Все заказы</button>
+          <button class="filter-btn">Новые</button>
+          <button class="filter-btn">На кухне</button>
+          <button class="filter-btn">Предзаказ</button>
+          <button class="filter-btn">Самовывоз</button>
+          <button class="filter-btn">Доставка</button>
+          <button class="filter-btn">Проблемные</button>
+          <button class="filter-btn">Онлайн-оплата</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Индикация новых заказов</h3>
+        <p>Визуальные статусы для ленты</p>
+        <div class="summary-list">
+          <div class="summary-item"><span>Новые</span><span style="color:#3d8b5f;font-weight:900;">Зелёный</span></div>
+          <div class="summary-item"><span>На кухне</span><span style="color:#d07b29;font-weight:900;">Оранжевый</span></div>
+          <div class="summary-item"><span>У курьера</span><span style="color:#7c63b8;font-weight:900;">Фиолетовый</span></div>
+          <div class="summary-item"><span>Завершён / отменён</span><span style="font-weight:900;">Серый / красный</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotkeys">
+      <div class="hotkey">
+        <div class="hotkey-top">
+          <div class="hotkey-title">Принять заказ</div>
+          <div class="hotkey-kbd">Enter</div>
+        </div>
+        <div class="hotkey-text">Быстро взять новый заказ в работу оператором.</div>
+      </div>
+
+      <div class="hotkey">
+        <div class="hotkey-top">
+          <div class="hotkey-title">Открыть поиск</div>
+          <div class="hotkey-kbd">/</div>
+        </div>
+        <div class="hotkey-text">Сразу перейти к поиску по номеру, клиенту или адресу.</div>
+      </div>
+
+      <div class="hotkey">
+        <div class="hotkey-top">
+          <div class="hotkey-title">Передать на кухню</div>
+          <div class="hotkey-kbd">K</div>
+        </div>
+        <div class="hotkey-text">Мгновенно сменить статус заказа на кухонную обработку.</div>
+      </div>
+
+      <div class="hotkey">
+        <div class="hotkey-top">
+          <div class="hotkey-title">Передать курьеру</div>
+          <div class="hotkey-kbd">C</div>
+        </div>
+        <div class="hotkey-text">Перевести заказ в статус доставки без лишних кликов.</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
